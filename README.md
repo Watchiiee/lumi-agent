@@ -355,67 +355,67 @@ app/
 
 
 ### TODO
-- [] GitHub 준비
-    - [] GitHub에서 새 repo 생성
-    - [] 3강 완성 코드를 main에 업로드
+- [v] GitHub 준비
+    - [v] GitHub에서 새 repo 생성
+    - [v] 3강 완성 코드를 main에 업로드
       ```bash
       git init
       git add .
       git commit -m "feat: 3강 완성 코드"
       git branch -M main
-      git remote add origin https://github.com/Watchiiee/lumi-agent
+      git remote add origin https://github.com/muahseol/lumi-agent2.git
       git push -u origin main
       ```
-    - [] GitHub Secrets 등록
+    - [v] GitHub Secrets 등록
         - repo → Settings → Secrets and variables → Actions → New repository secret
         - `UPSTAGE_API_KEY` / `SUPABASE_URL` / `SUPABASE_KEY` 3개 등록
-- [] CI 워크플로우 추가 (새 브랜치 → push → PR)
-    - [] 새 브랜치 생성 & 체크아웃
+- [v] CI 워크플로우 추가 (새 브랜치 → push → PR)
+    - [v] 새 브랜치 생성 & 체크아웃
       ```bash
       git checkout -b feat/ci
       ```
-    - [] `.github/workflows/ci.yml` 작성
-    - [] 변경된 파일 git add, commit, push
+    - [v] `.github/workflows/ci.yml` 작성
+    - [v] 변경된 파일 git add, commit, push
       ```bash
       git add .github/workflows/ci.yml
       git commit -m "update: ci.yml"
       git push --set-upstream origin feat/ci
       ```
-    - [] GitHub에서 **Compare & pull request** 버튼 → PR 생성
-    - [] PR의 Checks / Actions 탭에서 CI 결과 확인 — 실행 순서: lint → (test · ai-review 병렬) → comment
-    - [] 초록불(✅) 확인 후 Merge
-- [] 로컬 사전 검사 ① — 명령어 직접 실행 (CI가 돌리는 것과 똑같은 검사를 손으로 실행)
-    - [] 일부러 문제 있는 `test.py` 를 만들기 (안 쓰는 import + 줄 끝 공백)
+    - [v] GitHub에서 **Compare & pull request** 버튼 → PR 생성
+    - [v] PR의 Checks / Actions 탭에서 CI 결과 확인 — 실행 순서: lint → (test · ai-review 병렬) → comment
+    - [v] 초록불(✅) 확인 후 Merge
+- [v] 로컬 사전 검사 ① — 명령어 직접 실행 (CI가 돌리는 것과 똑같은 검사를 손으로 실행)
+    - [v] 일부러 문제 있는 `test.py` 를 만들기 (안 쓰는 import + 줄 끝 공백)
       ```python
       import os  # 안 쓰는 import (Ruff가 잡음)
       x   =     1     # 뒤에 불필요한 공백
       ```
-    - [] 린트 (안 쓰는 import·문법 실수 검사)
+    - [v] 린트 (안 쓰는 import·문법 실수 검사)
       ```bash
       uv run ruff check test.py          # 확인: 문제만 보여줌 (파일 안 고침) — CI가 쓰는 명령
       uv run ruff check test.py --fix    # 수정: 자동 수정 가능한 것 실제로 고침
       ```
-    - [] 포맷 (들여쓰기·공백 등 코드 모양 정리)
+    - [v] 포맷 (들여쓰기·공백 등 코드 모양 정리)
       ```bash
       uv run ruff format test.py --check # 확인: 규칙에 맞는지 검사만 (다르면 실패) — CI가 쓰는 명령
       uv run ruff format test.py         # 수정: 실제로 모양을 정리
       ```
-    - [] 단위 테스트 (확인만 — pytest는 자동 수정 없음. 실패하면 코드를 직접 고침)
+    - [v] 단위 테스트 (확인만 — pytest는 자동 수정 없음. 실패하면 코드를 직접 고침)
       ```bash
       uv run pytest tests/ -v            # CI의 test Job과 동일한 명령. push 전에 로컬에서 먼저 통과 확인
       ```
-        - [] health API 등록
-    - [] 확인 끝났으면 `test.py` 삭제
-- [] 로컬 사전 검사 ② — pre-commit 훅 (commit할 때 위 검사를 자동으로) — 아래 섹션 참고
-    - [] `uv run pre-commit install` — Git 훅 등록 (한 번만)
-    - [] 다시 문제 있는 `test.py` 를 만들고 `git add` → `git commit` → 훅이 자동으로 잡아서 수정하는지 확인
-    - [] 이미 push된 파일 전체 검사: `uv run pre-commit run --all-files`
-    - [] Unsafe 항목(F841·E402)은 직접 수정
-- [] Test가 통과되어야 Merge 가능하도록 설정 (Ruleset)
-    - [] Settings → Rules → Rulesets → New ruleset → **New branch ruleset**
-    - [] Ruleset Name: `protect main branch` / Enforcement status: **Active**
-    - [] Target branches: Add target → **Include default branch** (= main)
-    - [] Rules 체크: **Require a pull request before merging** + **Require status checks to pass** → 검색창에서 **Code Quality** 와 **Unit Tests** 선택
+        - [v] health API 등록
+    - [v] 확인 끝났으면 `test.py` 삭제
+- [v] 로컬 사전 검사 ② — pre-commit 훅 (commit할 때 위 검사를 자동으로) — 아래 섹션 참고
+    - [v] `uv run pre-commit install` — Git 훅 등록 (한 번만)
+    - [v] 다시 문제 있는 `test.py` 를 만들고 `git add` → `git commit` → 훅이 자동으로 잡아서 수정하는지 확인
+    - [v] 이미 push된 파일 전체 검사: `uv run pre-commit run --all-files`
+    - [v] Unsafe 항목(F841·E402)은 직접 수정
+- [v] Test가 통과되어야 Merge 가능하도록 설정 (Ruleset)
+    - [v] Settings → Rules → Rulesets → New ruleset → **New branch ruleset**
+    - [v] Ruleset Name: `protect main branch` / Enforcement status: **Active**
+    - [v] Target branches: Add target → **Include default branch** (= main)
+    - [v] Rules 체크: **Require a pull request before merging** + **Require status checks to pass** → 검색창에서 **Code Quality** 와 **Unit Tests** 선택
         - 목록에는 YAML의 job id(lint/test)가 아니라 **Job의 표시 이름**(`name:` 값)이 뜬다
         - 이 목록은 CI가 최소 한 번 실행된 뒤에만 나타남 (앞 단계에서 이미 돌렸으므로 보임)
 - [] AI 코드 리뷰 (CodeRabbit 연동 - 과제 교안보고 직접 해보기)
